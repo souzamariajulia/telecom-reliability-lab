@@ -17,6 +17,20 @@ services:
     networks:
       - telecom-network
 
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: telecom-prometheus
+    ports:
+      - "127.0.0.1:9091:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - telecom-prometheus-data:/prometheus
+    networks:
+      - telecom-network
+
+volumes:
+  telecom-prometheus-data:
+
 networks:
   telecom-network:
     driver: bridge

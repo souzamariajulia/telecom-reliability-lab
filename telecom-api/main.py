@@ -3,8 +3,11 @@ import os
 
 import httpx
 from fastapi import FastAPI, HTTPException
+from prometheus_fastapi_instrumentator import Instrumentator
 
 app = FastAPI(title="Telecom API")
+
+Instrumentator().instrument(app).expose(app)
 
 NETWORK_URL = os.getenv(
     "NETWORK_URL",
