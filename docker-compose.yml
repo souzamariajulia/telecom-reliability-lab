@@ -1,0 +1,2 @@
+environment:
+  NETWORK_URL: http://network-service:8001 
