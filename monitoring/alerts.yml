@@ -1,0 +1,12 @@
+groups:
+  - name: telecom-alerts
+    rules:
+      - alert: TelecomAPIDown
+        expr: up{job="telecom-api"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: telecom-api
+        annotations:
+          summary: "Telecom API indisponível"
+          description: "O Prometheus nao consegue coletar metricas da Telecom API ha mais de 1 minuto."

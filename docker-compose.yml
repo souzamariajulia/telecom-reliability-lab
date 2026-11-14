@@ -24,6 +24,7 @@ services:
       - "127.0.0.1:9091:9090"
     volumes:
       - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/alerts.yml:/etc/prometheus/alerts.yml:ro
       - telecom-prometheus-data:/prometheus
     networks:
       - telecom-network
