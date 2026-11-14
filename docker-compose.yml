@@ -1,2 +1,22 @@
-environment:
-  NETWORK_URL: http://network-service:8001 
+services:
+  telecom-api:
+    build: ./telecom-api
+    container_name: telecom-api
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      NETWORK_URL: http://network-service:8001
+    depends_on:
+      - network-service
+    networks:
+      - telecom-network
+
+  network-service:
+    build: ./network-service
+    container_name: network-service
+    networks:
+      - telecom-network
+
+networks:
+  telecom-network:
+    driver: bridge
