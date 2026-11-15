@@ -1,5 +1,9 @@
 name: Telecom Reliability Lab - CI
 
+permissions:
+  contents: read
+  packages: write
+
 on:
   push:
   pull_request:
@@ -43,3 +47,48 @@ jobs:
 
         - name: Build Network Service
           run: docker build -t telecom-network-service:ci ./network-service
+  
+
+  publish:
+    name: Publicar imagens no GHCR
+    runs-on: ubuntu-latest
+    needs: [test, docker-build]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Baixar o código
+        uses: actions/checkout@v4
+
+      - name: Login no GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Definir nome do proprietário em minúsculas
+        id: owner
+        run: echo "name=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_OUTPUT"
+
+      - name: Build e publicação da Telecom API
+        run: |
+          docker build \
+            -t ghcr.io/${{ steps.owner.outputs.name }}/telecom-api:latest \
+            ./telecom-api
+
+          docker push \
+            ghcr.io/${{ steps.owner.outputs.name }}/telecom-api:latest
+
+      - name: Build e publicação do Network Service
+        run: |
+          docker build \
+            -t ghcr.io/${{ steps.owner.outputs.name }}/network-service:latest \
+            ./network-service
+
+          docker push \
+            ghcr.io/${{ steps.owner.outputs.name }}/network-service:lates
+
