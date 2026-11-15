@@ -1,0 +1,10 @@
+services:
+  telecom-api:
+    image: ghcr.io/souzamariajulia/telecom-api:latest
+    build: !reset null
+    environment:
+      NETWORK_URL: http://network-service:8001
+
+  network-service:
+    image: ghcr.io/souzamariajulia/network-service:latest
+    build: !reset null
