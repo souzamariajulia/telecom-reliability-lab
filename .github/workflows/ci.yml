@@ -90,5 +90,5 @@ jobs:
             ./network-service
 
           docker push \
-            ghcr.io/${{ steps.owner.outputs.name }}/network-service:lates
+            ghcr.io/${{ steps.owner.outputs.name }}/network-service:latest
 
