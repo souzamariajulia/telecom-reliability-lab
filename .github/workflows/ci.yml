@@ -29,17 +29,17 @@ jobs:
           python -m pytest telecom-api/tests/ -v
 
 
-docker-build:
-    name: Build das imagens Docker
-    runs-on: ubuntu-latest
-    needs: test
+  docker-build:
+      name: Build das imagens Docker
+      runs-on: ubuntu-latest
+      needs: test
 
-    steps:
-      - name: Baixar o código
-        uses: actions/checkout@v4
+      steps:
+        - name: Baixar o código
+          uses: actions/checkout@v4
 
-      - name: Build Telecom API
-        run: docker build -t telecom-api:ci ./telecom-api
+        - name: Build Telecom API
+          run: docker build -t telecom-api:ci ./telecom-api
 
-      - name: Build Network Service
-        run: docker build -t telecom-network-service:ci ./network-service
+        - name: Build Network Service
+          run: docker build -t telecom-network-service:ci ./network-service
